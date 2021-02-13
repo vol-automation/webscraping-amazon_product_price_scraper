@@ -80,6 +80,8 @@ def get_amazon_price(product_url):
             elems = soup.select("[id^=mediaTab_heading].a-active span.mediaTab_subtitle")
         if len(elems) == 0:
             elems = soup.select("#tmmSwatches li.selected .a-color-price")
+        if len(elems) == 0:
+            elems = soup.select("#price_inside_buybox")    
         price = elems[0].text.strip()
     except Exception as err:
         #print(err)
