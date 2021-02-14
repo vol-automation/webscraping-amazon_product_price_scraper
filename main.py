@@ -9,7 +9,7 @@ url = ''
 dev_environment = False
 
 #  check if program was launched by terminal or another launcher
-if sys.argv[0] == os.path.basename(__file__) or \
+if os.path.basename(__file__) in sys.argv[0] or \
    sys.argv[0] == os.path.abspath(__file__):
     # cmd has launched program
     # check presence of command line arguments
@@ -56,13 +56,13 @@ navigation_session.headers.update(headers)
 # %%
 # - if you want to see requests in Fiddler run this cell, 
 # - otherwise comment this block in the final program code    
-cafile =  os.path.abspath('fiddler-certificate.crt')
-proxies = {
-  'https': 'http://127.0.0.1:8888',
-  'http': 'http://127.0.0.1:8888'
-}
-navigation_session.proxies = proxies
-navigation_session.verify = cafile
+# cafile =  os.path.abspath('fiddler-certificate.crt')
+# proxies = {
+#   'https': 'http://127.0.0.1:8888',
+#   'http': 'http://127.0.0.1:8888'
+# }
+# navigation_session.proxies = proxies
+# navigation_session.verify = cafile
 
 # %%
 # - Methods
@@ -81,7 +81,9 @@ def get_amazon_price(product_url):
         if len(elems) == 0:
             elems = soup.select("#tmmSwatches li.selected .a-color-price")
         if len(elems) == 0:
-            elems = soup.select("#price_inside_buybox")    
+            elems = soup.select("#price_inside_buybox")  
+        if len(elems) == 0:
+            elems = soup.select("#priceblock_ourprice")
         price = elems[0].text.strip()
     except Exception as err:
         #print(err)
